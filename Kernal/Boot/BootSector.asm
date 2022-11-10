@@ -36,7 +36,7 @@ DISK_READ:
     je DISK_READ_END
     sub word[TOTALSECTORNUMBER], 1
 
-    ;BIOS 
+    ;BIOS
 
 HANDLE_DISK_ERROR:
 
@@ -45,4 +45,3 @@ DISK_READ_END:
 
 times 510 - ($ - $$) db 0
 db 0x55, 0xAA
-;END
