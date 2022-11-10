@@ -32,6 +32,19 @@ CLEAR_DISPLAY:
     cmp si, 80 * 25 * 2
     jl CLEAR_DISPLAY
 
+PRINT_INIT_TEXT:
+    push TXT_CAPTION
+    push 0      ; X(0)
+    push 0      ; Y(0)
+    call TEXT_PRINT
+    add sp, 6
+
+    push TXT_IMAGE_LOAD
+    push 1      ; X(0)
+    push 0      ; Y(0)
+    call TEXT_PRINT
+    add sp, 6
+
 DISK_RESET:
     ; BIOS SERVICE : DISK RESET
     mov ax, 0x00       ; BIOS SERVICE NO_0(0x00)
@@ -84,10 +97,22 @@ DISK_READ:
     jmp DISK_READ
     
 HANDLE_DISK_ERROR:
+    push TXT_DISK_ERROR
+    push 1      ; Y(1)
+    push 20     ; X(20)
+    call TEXT_PRINT
+    jmp $
 
 DISK_READ_END:
+    push TXT_LOAD_COMPLETE
+    push 1      ; X(1)
+    push 20     ; Y(20)
+    call TEXT_PRINT
+    add sp, 6
 
-PRINT_TEXT:
+    jmp 0x1000:0x0000       ; execute OS Image
+
+TEXT_PRINT_FUNCTION:
     push bp
     mov bp, sp
 
@@ -118,7 +143,7 @@ PRINT_TEXT:
     ; TEXT DATA
     mov si, word[bp + 8]
 
-    PRINT_FUNCTION:
+    TEXT_PRINT:
         mov cl, byte[si]
         cmp cl, 0
         je ENDPRINT
@@ -127,7 +152,7 @@ PRINT_TEXT:
         add si, 1
         add di, 2
 
-        jmp PRINT_FUNCTION
+        jmp TEXT_PRINT
 
     ENDPRINT:
         pop dx
@@ -140,9 +165,10 @@ PRINT_TEXT:
         ret
 
 TEXT:
-    MSG1: db 'TEST OS BOOTLOADER', 0
+    TXT_CAPTION: db 'TEST OS BOOTLOADER', 0
     TXT_DISK_ERROR: db 'Disk Error', 0
-    
+    TXT_IMAGE_LOAD: db 'Image Loading..', 0
+    TXT_LOAD_COMPLETE: db 'Complete', 0
 
 times 510 - ($ - $$) db 0
 db 0x55, 0xAA
