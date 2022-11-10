@@ -1,3 +1,0 @@
-### CAPTION
-
-**Hello World!**
