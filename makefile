@@ -6,4 +6,5 @@ Kernal:
 disk.img:
 
 clean:
+	make -C kernal clean
 	rm -f disk.img

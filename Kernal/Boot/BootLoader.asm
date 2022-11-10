@@ -17,6 +17,12 @@ START:
     mov es, ax
     mov di, 0       ; INIT di
 
+    ; CONFIG STACK
+    mov ax, 0x0000
+    mov ss, ax
+    mov sp, 0xFFFE
+    mov bp, 0xFFFE
+
 CLEAR_DISPLAY:
     mov byte[es:di], 0
     inc di
@@ -77,7 +83,6 @@ DISK_READ:
     add byte[TRACKNUMBER], 1
     jmp DISK_READ
     
-
 HANDLE_DISK_ERROR:
 
 DISK_READ_END:
