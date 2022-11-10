@@ -139,5 +139,10 @@ PRINT_TEXT:
         pop bp
         ret
 
+TEXT:
+    MSG1: db 'TEST OS BOOTLOADER', 0
+    TXT_DISK_ERROR: db 'Disk Error', 0
+    
+
 times 510 - ($ - $$) db 0
 db 0x55, 0xAA
