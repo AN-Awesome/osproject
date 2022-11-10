@@ -14,7 +14,7 @@ START:
     mov ds, ax
 
     mov ax, 0xb800
-    mov es, ax ; es SET with di
+    mov es, ax
 
 mov di, 0
 CLEAR_DISPLAY:
@@ -29,14 +29,37 @@ CLEAR_DISPLAY:
 DISK_RESET:
     mov ax, 0
     mov dl, 0
-    inc 0x13        ; DISK_IO_INTERRUPT : 0x13
+    int 0x13        ; DISK_IO_INTERRUPT : 0x13
+    jc HANDLE_DISK_ERROR
+
+; Address to Copy Image of OS: 0x10000(0x1000_Segment * 0x10 + 0x0000_OffSet)
+mov si, 0x1000  ; Segment
+mov es, si
+
+mov bx, 0       ; OffSet
 
 DISK_READ:
     cmp word[TOTALSECTORNUMBER], 0
     je DISK_READ_END
     sub word[TOTALSECTORNUMBER], 1
 
-    ;BIOS
+    mov ah, 0x02
+    mov al, 1
+    mov ch, byte[TRACKNUMBER]
+    mov cl, byte[SECTORNUMBER]
+    mov dh, byte[HEADNUMBER]
+    mov dl, 0
+    int 0x13
+    jc HANDLE_DISK_ERROR
+
+    add si, 0x200
+    mov es, si
+
+    add byte[SECTORNUMBER], 1
+    cmp byte[SECTORNUMBER], 19
+    jl DISK_READ
+
+    ; HEAD
 
 HANDLE_DISK_ERROR:
 
