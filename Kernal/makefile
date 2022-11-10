@@ -1,4 +1,4 @@
-all: BootLoaer ProtectedMode
+all: BootLoader ProtectedMode
 
 BootLoader:
 	make -C Boot
