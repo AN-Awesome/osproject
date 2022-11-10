@@ -74,6 +74,8 @@ DISK_READ:
     jne DISK_READ
 
     ; TRACK COUNT
+    add byte[TRACKNUMBER], 1
+    jmp DISK_READ
     
 
 HANDLE_DISK_ERROR:
