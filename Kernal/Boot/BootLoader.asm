@@ -29,7 +29,7 @@ START:
     inc di
 
 END:
-    hlt
+    hlt         ; Kill
     jmp END
 
 times 510 - ($ - $$) db 0
