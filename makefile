@@ -1,10 +1,22 @@
-all: Kernal disk.img
+all: KERNEL IMG
 
-Kernal:
+KERNEL:
+	@echo 
+	@echo =========== Kernal Build ===========
+	@echo 
 	make -C kernal
+	@echo 
+	@echo ====================================
+	@echo 
 
-disk.img: 
+IMG: 
+	@echo 
+	@echo =========== Image Build ===========
+	@echo 
 	cp kernal/bin/BootLoader.bin disk.img
+	@echo 
+	@echo ===================================
+	@echo 
 
 clean:
 	make -C kernal clean
