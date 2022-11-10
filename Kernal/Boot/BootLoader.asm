@@ -27,8 +27,8 @@ CLEAR_DISPLAY:
     mov byte[es:di], 0
     inc di
     mov byte[es:di], 0x0A
+    inc di
 
-    add di, 2
     cmp si, 80 * 25 * 2
     jl CLEAR_DISPLAY
 
@@ -87,6 +87,57 @@ HANDLE_DISK_ERROR:
 
 DISK_READ_END:
 
+PRINT_TEXT:
+    push bp
+    mov bp, sp
+
+    push es
+    push si
+    push di
+    push ax
+    push cs
+    push dx
+
+    ; Setup VMEM(0xB8000)
+    mov ax, 0xB800
+    mov es, ax
+
+    ; Char_POSITION(X, Y)
+    ; Y Position
+    mov ax, word[bp + 6]
+    mov si, 160
+    mul si
+    mov di, ax
+
+    ; X Position
+    mov ax, word[bp + 4]
+    mov si, 2               ; 2 byte per character
+    mul si
+    add di, ax
+
+    ; TEXT DATA
+    mov si, word[bp + 8]
+
+    PRINT_FUNCTION:
+        mov cl, byte[si]
+        cmp cl, 0
+        je ENDPRINT
+
+        mov byte[es:di], cl
+        add si, 1
+        add di, 2
+
+        jmp PRINT_FUNCTION
+
+    ENDPRINT:
+        pop dx
+        pop cx
+        pop ax
+        pop di
+        pop si
+        pop es
+        pop bp
+        ret
 
 times 510 - ($ - $$) db 0
 db 0x55, 0xAA
