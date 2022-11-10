@@ -1,8 +1,7 @@
-all: BootLoader ProtectedMode disk.img
+all: Kernal disk.img
 
-BootLoader:
-
-ProtectedMode:
+Kernal:
+	make -C kernal
 
 disk.img:
 
