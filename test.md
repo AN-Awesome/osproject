@@ -1,3 +1,3 @@
 ### CAPTION
 
-**Hello World!** fuck you
+**Hello World!**
