@@ -1,5 +1,5 @@
 # file      BootLoader.asm
-# date      2008/11/27
+# date      2008/11/27...?
 # author    kkamagui 
 #           Copyright(c)2008 All rights reserved by kkamagui
 # brief     MINT64 OS의 부트 로더 소스 파일
