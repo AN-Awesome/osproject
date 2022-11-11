@@ -98,6 +98,7 @@ SETUP_DISK:
         push 0                              ; X(0)
         call PRINTSTRING                    ; PRINTSTRING(X, Y, String)
 
+        ; Jump to OS Image(0x10000)
         jmp 0x1000:0x0000
 
     HANDLE_DISK_IO_ERROR:
@@ -107,7 +108,6 @@ SETUP_DISK:
         call PRINTSTRING                    ; PRINTSTRING(X, Y, String)
 
         jmp $       
-
 
 PRINTSTRING:
     push bp
