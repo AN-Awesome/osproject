@@ -7,7 +7,7 @@ START:
     mov ds, ax          ; ds, es = ax
     mov es, ax          ; . . .
 
-    cli                 ; Disable interrupt
+    cli                 ; Disable interrupt(Clear Interrupt Flag)
     lgdt [GDTR]         ; Set the GDTR & load GDT Table
 
     ; Enter the Protected Mode
