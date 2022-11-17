@@ -20,13 +20,12 @@ START:
 
 INIT_SCREEN:
     mov byte[es:di], 0
-    mov byte[es:di + 1], 0x0A   ; BLINK: 0 / BACKGROUND: 000 / BRIGHTNESS: 1 / TEXTCOLOR: 010
+    mov byte[es:di + 1], 0x0F   ; BLINK: 0 / BACKGROUND: 000 / BRIGHTNESS: 1 / TEXTCOLOR: 010
     add di, 2                   ; di += 2
     cmp di, 80 * 25 * 2         ; if (si < 80 * 25 * 2) goto CLEAR_DISPLAY
     jl INIT_SCREEN              ; . . .
 
     PRINT_INIT_TEXT:
-        push COLOR_WHITE
         push CAPTION        ; String
         push 0              ; Y(0)
         push 0              ; X(0)
@@ -159,7 +158,7 @@ PRINTSTRING:
         pop si
         pop es
         pop bp
-        ret 6
+        ret 8
 
 STRING_DAT:
     CAPTION: db 'TEST OS', 0
