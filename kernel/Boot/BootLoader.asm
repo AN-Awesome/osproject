@@ -166,13 +166,6 @@ STRING_DAT:
     OSIMAGELOADCOMPLETEMESSAGE: db 'Load Complete', 0
     OSIMAGELOADERRORMESSAGE: db 'Error', 0
 
-COLOR_CODE:
-    COLOR_GREEN: db 0x0A
-    COLOR_YELLOW: db 0x0E
-    COLOR_WHITE: db 0x0F
-    COLOR_SKY: db 0x0B
-    COLOR_RED: db 0x04
-    COLOR_PINK: db 0x05
-
 times 510 - ($ - $$) db 0x00
 db 0x55, 0xAA
+; TEST COMMENT
