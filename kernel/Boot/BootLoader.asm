@@ -28,3 +28,5 @@ mov byte[es:si], 'i'
 jmp $
 times 510 - ($ - $$) db 0x00
 db 0x55, 0xAA
+
+; times 1474560-($-$$) db 0
