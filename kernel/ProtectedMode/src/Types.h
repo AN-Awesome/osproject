@@ -1,4 +1,4 @@
-#ifndef __TYPES_H__             //코드 맨 아랫줄에 #enif로 끝나야 한다.
+#ifndef __TYPES_H__                 //코드 맨 아랫줄에 #enif로 끝나야 한다.
 #define __TYPES_H__
 
 #define BYTE unsigned char
@@ -11,13 +11,11 @@
 #define FALSE 0
 #define NULL 0
 
-#pragma pack( push, 1 )         //push
-                                // 비디오 모드 중 텍스트 모드 화면을 구성하는 자료구조.
-{
-typedef struct kCharactorStruct 
+#pragma pack(push, 1)               //push                                             
+typedef struct kCharactorStruct {   // 비디오 모드 중 텍스트 모드 화면을 구성하는 자료구조.
     BYTE bCharactor;
     BYTE bAttribute;
 }CHARACTER;
-#pragma pop                     //pop
+#pragma pop                         //pop
 
 #endif 
