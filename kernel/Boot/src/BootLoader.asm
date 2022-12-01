@@ -162,7 +162,7 @@ PRINTSTRING:
         ret 8
 
 STRING_DAT:
-    CAPTION: db 'TEST OS', 0
+    CAPTION: db 'YOURMOM OS', 0
     OSIMAGELOADINGMESSAGE: db 'Image Loading..', 0
     OSIMAGELOADCOMPLETEMESSAGE: db 'Load Complete', 0
     OSIMAGELOADERRORMESSAGE: db 'Error', 0
