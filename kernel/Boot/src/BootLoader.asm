@@ -39,7 +39,7 @@ SETUP_DISK:
         call PRINTSTRING            ; PRINTSTRING(X, Y, String)
 
     CONFIG:
-        TOTALSECTORCOUNT: dw 1024
+        TOTALSECTORCOUNT: dw 0x02 ;프로텍티드모드 전환후 수정 1024 -> 0x02
         SECTORNUMBER: db 0x02
         HEADNUMBER: db 0x00
         TRACKNUMBER: db 0x00
