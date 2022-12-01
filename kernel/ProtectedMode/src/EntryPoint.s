@@ -32,7 +32,7 @@ PROTECTED_MODE:
     mov ebp, 0xFFFE
 
     ; Print Text
-    push (MODE_SWITCH_COMPLETE - $$ + 0x10000)
+    push (MODE_SWITCH_COMPLETE - $$ + 0x10200)
     push 3
     push 0
     call PRINTSTRING
