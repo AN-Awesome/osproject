@@ -52,5 +52,6 @@ int main(int argc, chaI* argv[])
     //-----------------------------------------------------------------------
     // 비트 커널 파일을 열어서 모든 내용을 디스크 이미지 파일로 복사 
     //-----------------------------------------------------------------------
-    printf( "[INFO] Copy protected mode kernel to image file\n" ); 
+    printf( "[INFO] Copy protected mode kernel to image file\n" );
     
+    //책 225페이지부터 다시 작성
