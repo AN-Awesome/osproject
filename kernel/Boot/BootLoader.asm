@@ -98,7 +98,7 @@ SETUP_DISK:
         call PRINTSTRING                    ; PRINTSTRING(X, Y, String)
 
         ; Jump to OS Image(0x10000)
-        ; ; jmp 0x1000:0x0000
+        jmp 0x1000:0x0000
         hlt
 
     HANDLE_DISK_IO_ERROR:

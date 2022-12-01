@@ -15,11 +15,11 @@ START:
     mov eax, 0x4000003B 
     mov cr0, eax        ; CR0_Control Register = SETTED FLAGS & SWITCH MODE
 
-    jmp dword dx08: (PROTECTEDMODE - $$ + 0x10000)
+    jmp dword dx08: (PROTECTED_MODE - $$ + 0x10000)
 
 ; ENTER PROTECTED MODE
 [BITS 32]
-PROTECTEDMODE:
+PROTECTED_MODE:
     mov ax, 0x10
     mov ds, ax
     mov es, ax
@@ -31,47 +31,80 @@ PROTECTEDMODE:
     mov esp, 0xFFFE
     mov ebp, 0xFFFE
 
-    ; Complete Message
+    ; Print Text
+    push (MODE_SWITCH_COMPLETE - $$ + 0x10000)
+    push 3
+    push 0
+    call PRINTSTRING
 
     jmp $
 
-    PRINTSTRING:
+PRINTSTRING:
     push ebp
     mov ebp, esp
+    push esi
+    push edi
+    push eax
+    push ecx
+    push edx
 
     ; Calculate character position [ di = ? ]
     ; Y Position(Line)
-    mov eax, word[ebp + 6]    ; [bp + 6] = Y position
+    mov eax, word[ebp + 12]    ; [bp + 6] = Y position
     mov esi, 160
     mul esi
     mov edi, eax
 
     ; X Position
-    mov ax, word[bp + 4]    ; [bp + 4] = X position
-    mov si, 2
-    mul si
-    add di, ax
+    mov eax, word[ebp + 8]    ; [bp + 4] = X position
+    mov esi, 2
+    mul esi
+    add edi, eax
 
     ; String data
-    mov si, word[bp + 8]    ; [bp + 8] = String
+    mov esi, word[ebp + 16]    ; [bp + 8] = String
 
     PRINT_TEXT:
-        mov cl, byte[si]
+        mov cl, byte[esi]
         cmp cl, 0           ; End of string :: 0
         je END_PRINT_TEXT   ; . . .
 
-        mov byte[es:di], cl ; Print char[si]
+        mov byte[edi + 0xB8000], cl ; Print char[si]
 
-        add si, 1
-        add di, 2
+        add esi, 1
+        add edi, 2
         jmp PRINT_TEXT
 
     END_PRINT_TEXT:
-        pop dx
-        pop cx
-        pop ax
-        pop di
-        pop si
-        pop es
-        pop bp
-        ret 8
+        pop edx
+        pop ecx
+        pop eax
+        pop edi
+        pop esi
+        pop ebp
+        ret 12
+
+align 8, db 0
+dw 0x0000
+
+GDTR:
+    dw GDTEND - GDT - 1
+    dd (GDT - $$ + 0x10000)
+
+GDT:
+    NullDescriptor:
+        dw 0x0000, 0x0000
+        db 0x00, 0x00, 0x00, 0x00
+
+    CodeDescriptor:
+        dw 0xFFFF, 0x0000
+        db 0x00, 0x9A, 0xCF, 0x00
+
+    DataDescriptor:
+        dw 0xFFFF, 0x0000
+        db 0x00, 0x92, 0xCF, 0x00
+
+GDTEND:
+
+STRING_DAT:
+    MODE_SWITCH_COMPLETE: db 'Mode switch process completed', 0
