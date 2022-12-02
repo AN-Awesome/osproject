@@ -1,15 +1,21 @@
+# Functions
 GCC32 = x86_64-pc-linux-gcc.exe -c -m32 -ffreestanding
 LD32 = x86-_64-pc-linux-ld.exe -melf_i386 -T ../elf_i386.x -nostdlib -e main -Ttext 0x10200
 OBJCOPY32 = x86_64-pc-linux-objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
-SOURCEDIRECTORY = src
+# File search macro
+CSRC = $(wildcard ./src/*.c)
+ASMSRC = $(wildcard ./src/*.asm)
+
+COBJ = $(subst Main.o, , $(notdir $(patsubst %.c, %.o, $(CSRC))))
+ASMOBJ = $(notdir $(patsubst %.asm, %.o, $(ASMSRC)))
 
 all: prepare ProtectedMode.bin # EntryPoint Main.c
 
 prepare: # mkdir : make directory
 	mkdir -p tmp
 
-tmp/EntryPoint.bin: src/EntryPoint.s
+tmp/EntryPoint.bin: ./src/EntryPoint.s
 	nasm -o $@ $<
 
 dep:
@@ -29,19 +35,13 @@ ProtectedMode.bin: tmp/EntryPoint.bin tmp/ProtectedMode.elf.bin
 clean:
 	rm -f tmp/*.*
 
-CSRC = $(wildcard ./src/*.c)
-ASMSRC = $(wildcard ./src/*.asm)
-
-COBJ = $(subst Main.o, , $(notdir $(patsubst %.c, %.o, $(CSRC))))
-ASMOBJ = $(notdir $(patsubst %.asm, %.o, $(ASMSRC)))
-
 # .c 파일을 .o 파일로 바꾸는 규칙 정의 
-%.o: ./src/%.C
+%.o: ./src/%.c
 	$(GCC32) -c %<
 
 # .asm 파일을 .o 파일로 바꾸는 규칙 정의
 %.o: ./src/%.asm
-		nasm -f elf32 -o $@ $<
+	nasm -f elf32 -o $@ $<
 
 InternalDependency:
 	$(GCC32) -MM $(CSRC) > Dependency.dep
