@@ -1,11 +1,11 @@
-all: BootLoader ProtectedMode
+all: BootLoader Kernel32
 
 BootLoader:
 	@echo == BUILD BOOTLOADER ===
 	make -C Boot
 	@echo == COMPLETE BUILD BOOTLOADER ===
 
-ProtectedMode:
+Kernel32:
 	@echo == BUILD 32 KERNEL ===
 	make -C ProtectedMode
 	@echo == COMPLETE BUILD 32 KERNEL ===
