@@ -10,7 +10,7 @@ ASMSRC = $(wildcard ./src/*.asm)
 COBJ = $(subst Main.o, , $(notdir $(patsubst %.c, %.o, $(CSRC))))
 ASMOBJ = $(notdir $(patsubst %.asm, %.o, $(ASMSRC)))
 
-all: prepare ./tmp/EntryPoint.bin dep
+all: prepare ProtectedMode.bin
 
 prepare: 
 	mkdir -p tmp
@@ -20,10 +20,34 @@ prepare:
 	nasm -o $@ $<
 	@echo ========= EntryPoint.bin =========
 
-dep:
-	@echo ========= Make Dependency =========
-	make -C tmp -f ../makefile InternalDependency
-	@echo ========= Dependency Search Complete =========
-
 InternalDependency:
 	$(GCC32) -MM $(CSRC) > Dependency.dep
+
+# .c 파일을 .o 파일로 바꾸는 규칙 정의 
+%.o: ./src/%.c
+	$(GCC32) -c %<
+
+# .asm 파일을 .o 파일로 바꾸는 규칙 정의
+%.o: ./src/%.asm
+	nasm -f elf32 -o $@ $<
+
+ProtectedMode.elf: Main.o $(COBJ) $(ASMOBJ)
+	$(LD32) -o $@ $^
+
+dep:
+	@echo ==================================== Make Dependency ====================================
+	make -C tmp -f ../makefile InternalDependency
+	@echo ==================================== Dependency Search Complete ====================================
+	
+ExecuteInternelBuild : dep
+	make -C tmp -f ../makefile ProtectedMode.elf
+
+./tmp/ProtectedMode.elf.bin: ExecuteInternelBuild
+	$(OBJCOPY32) ./tmp/ProtectedMode.elf $@
+
+ProtectedMode.bin: ./tmp/EntryPoint.bin ./tmp/ProtectedMode.elf.bin
+	cat $^ > $@
+
+ifeq (Dependency.dep, $(wildcard Dependency.dep))
+include Dependency.dep
+endif
