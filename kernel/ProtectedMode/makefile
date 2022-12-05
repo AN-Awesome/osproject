@@ -1,13 +1,3 @@
-# file		makefile
-# date		2008/12/14
-# author	kkamagui 
-# brief		보호 모드 커널을 빌드하기 위한 make 파일
-
-################################################################################
-# 빌드 환경 및 규칙 설정 
-################################################################################
-# 컴파일러 및 링커 정의
-NASM32 = nasm
 GCC32 = x86_64-pc-linux-gcc.exe -c -m32 -ffreestanding
 LD32 = x86_64-pc-linux-ld.exe -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
 
@@ -30,7 +20,7 @@ prepare:
 
 # 커널 엔트리 포인트 빌드
 $(OBJECTDIRECTORY)/EntryPoint.bin: $(SOURCEDIRECTORY)/EntryPoint.s
-	$(NASM32) -o $@ $<
+	nasm -o $@ $<
 
 # 커널의 C 소스 파일에 대한 의존성 정보 생성
 dep:
