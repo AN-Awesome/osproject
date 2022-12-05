@@ -15,7 +15,7 @@ START:
     mov eax, 0x4000003B 
     mov cr0, eax        ; CR0_Control Register = SETTED FLAGS & SWITCH MODE
 
-    jmp dword dx08: (PROTECTED_MODE - $$ + 0x10000)
+    jmp dword 0x08: (PROTECTED_MODE - $$ + 0x10000)
 
 ; ENTER PROTECTED MODE
 [BITS 32]
@@ -23,7 +23,7 @@ PROTECTED_MODE:
     mov ax, 0x10
     mov ds, ax
     mov es, ax
-    mov fx, ax
+    mov fs, ax
     mov gs, ax
 
     ; Configure Stack
@@ -50,19 +50,19 @@ PRINTSTRING:
 
     ; Calculate character position [ di = ? ]
     ; Y Position(Line)
-    mov eax, word[ebp + 12]    ; [bp + 6] = Y position
+    mov eax, dword[ebp + 12]    ; [bp + 6] = Y position
     mov esi, 160
     mul esi
     mov edi, eax
 
     ; X Position
-    mov eax, word[ebp + 8]    ; [bp + 4] = X position
+    mov eax, dword[ebp + 8]    ; [bp + 4] = X position
     mov esi, 2
     mul esi
     add edi, eax
 
     ; String data
-    mov esi, word[ebp + 16]    ; [bp + 8] = String
+    mov esi, dword[ebp + 16]    ; [bp + 8] = String
 
     PRINT_TEXT:
         mov cl, byte[esi]
