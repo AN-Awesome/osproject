@@ -40,7 +40,9 @@ dep:
 	@echo ==================================== Dependency Search Complete ====================================
 	
 ExecuteInternelBuild : dep
+	==================================== ExecuteInternelBuild ====================================
 	make -C tmp -f ../makefile ProtectedMode.elf
+	==================================== Complete ExecuteInternelBuild ====================================
 
 ./tmp/ProtectedMode.elf.bin: ExecuteInternelBuild
 	$(OBJCOPY32) ./tmp/ProtectedMode.elf $@
@@ -51,3 +53,7 @@ ProtectedMode.bin: ./tmp/EntryPoint.bin ./tmp/ProtectedMode.elf.bin
 ifeq (Dependency.dep, $(wildcard Dependency.dep))
 include Dependency.dep
 endif
+
+clean:
+	rm -f *.bin
+	rm -f tmp/*.*

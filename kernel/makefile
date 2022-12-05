@@ -12,3 +12,4 @@ Kernel32:
 	
 clean:
 	make -C bin clean
+	make -C ProtectedMode clean
