@@ -85,3 +85,4 @@ Kernel32.elf: $(CENTRYPOINTOBJECTFILE) $(COBJECTFILES) $(ASSEMBLYOBJECTFILES)
 ifeq (Dependency.dep, $(wildcard Dependency.dep))
 include Dependency.dep
 endif
++
