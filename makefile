@@ -9,11 +9,11 @@ _kernel:
 	@echo ============================================================
 	@echo 
 
-disk.img: ./kernel/bin/BootLoader.bin
+disk.img: ./kernel/bin/BootLoader.bin ./kernel/bin/Kernel32.bin
 	@echo 
 	@echo ==================== Disk Image Build ====================
 	@echo 
-	cp kernel/bin/BootLoader.bin disk.img
+	cat $< > disk.img
 	@echo 
 	@echo ============================================================
 	@echo 

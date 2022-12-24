@@ -11,5 +11,5 @@ Kernel32:
 	@echo ==================== COMPLETE BUILD 32 KERNEL ====================
 	
 clean:
-	make -C bin clean
+	rm -f bin/*.*
 	make -C ProtectedMode clean
