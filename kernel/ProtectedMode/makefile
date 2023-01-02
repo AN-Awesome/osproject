@@ -1,5 +1,5 @@
 GCC32 = x86_64-pc-linux-gcc.exe -c -m32 -ffreestanding
-LD32 = x86_64-pc-linux-ld.exe -melf_i386 -T ../elf_i386.x -nostdlib -e Main -Ttext 0x10200
+LD32 = x86_64-pc-linux-ld.exe -melf_i386 -T ./elf_i386.x -nostdlib -e Main -Ttext 0x10200
 OBJCOPY32 = x86_64-pc-linux-objcopy -j .text -j .data -j .rodata -j .bss -S -O binary
 
 all: prepare ../bin/Kernel32.bin
@@ -41,9 +41,9 @@ ASSEMBLYSOURCEFILES = $(wildcard ../src/*.asm)
 COBJECTFILES = $(subst Main.o, , $(notdir $(patsubst %.c,%.o,$(CSOURCEFILES))))
 ASSEMBLYOBJECTFILES = $(notdir $(patsubst %.asm,%.o,$(ASSEMBLYSOURCEFILES)))
 
-# Transform file name extentions(*.c, *.asm -> *.o)
+# Transform file name extentions(*.c, *.asm -> *.obj)
 %.o: ../src/%.c
-	$(GCC32) -c $<
+	$(GCC32) $<
 
 %.o: ../src/%.asm
 	nasm -f elf32 -o $@ $<

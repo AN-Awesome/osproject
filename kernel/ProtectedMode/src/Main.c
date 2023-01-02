@@ -1,7 +1,5 @@
 #include "Types.h"                                              //헤더파일 불러오기
 
-void kPrintString(int iX, int iY, const char* pcString);        //예제 함수 정의
-
 void Main(void) {
     kPrintString(0, 3, "Test string...");
     while(1);

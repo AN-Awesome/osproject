@@ -164,7 +164,7 @@ PRINTSTRING:
 STRING_DAT:
     CAPTION: db 'YOURMOM OS', 0
     OSIMAGELOADINGMESSAGE: db 'Image Loading..', 0
-    OSIMAGELOADCOMPLETEMESSAGE: db 'Load Complete', 0
+    OSIMAGELOADCOMPLETEMESSAGE: db 'Load Complete..', 0
     OSIMAGELOADERRORMESSAGE: db 'Error', 0
 
 times 510 - ($ - $$) db 0x00
