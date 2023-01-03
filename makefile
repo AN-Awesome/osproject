@@ -21,7 +21,7 @@ disk.img: ./kernel/bin/BootLoader.bin ./kernel/bin/Kernel32.bin
 	@echo 
 	@echo ==================== Disk Image Build ====================
 	@echo 
-	cat $^ > disk.img
+	./tools/ImageBuilder.exe $^
 	@echo 
 	@echo ============================================================
 	@echo 
