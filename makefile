@@ -1,4 +1,4 @@
-all: _kernel tools disk.img
+all: _kernel _tools disk.img
 _kernel:
 	@echo 
 	@echo ==================== Kernel Source Build ====================
@@ -8,7 +8,7 @@ _kernel:
 	@echo ============================================================
 	@echo 
 
-tools:
+_tools:
 	@echo 
 	@echo ==================== Tools Build ====================
 	@echo 
