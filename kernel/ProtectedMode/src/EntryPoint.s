@@ -70,7 +70,7 @@ PRINTSTRING:
         je END_PRINT_TEXT   ; . . .
 
         mov byte[edi + 0xB8000], cl ; Print char[si]
-        mov byte[edi + 1 + 0xB8000], cl ; Print char[si]
+        mov byte[edi + 1 + 0xB8000], 0x0E ; Print char[si]
 
         add esi, 1
         add edi, 2
