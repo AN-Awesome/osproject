@@ -25,11 +25,15 @@ INIT_SCREEN:
     cmp di, 80 * 25 * 2         ; if (si < 80 * 25 * 2) goto CLEAR_DISPLAY
     jl INIT_SCREEN              ; . . .
 
+    mov si, 0
     PRINT_INIT_TEXT:
-        push CAPTION        ; String
-        push 0              ; Y(0)
-        push 0              ; X(0)
-        call PRINTSTRING    ; PRINTSTRING(X, Y, String)
+        mov cl, byte[si + CAPTION]
+        cmp cl, 0
+        je SETUP_DISK
+
+        mov byte[es:si], cl
+        inc si
+        jmp PRINT_INIT_TEXT
 
 SETUP_DISK:
     PRINT_IMAGE_LOAD_TEXT:
@@ -162,7 +166,7 @@ PRINTSTRING:
         ret 8
 
 STRING_DAT:
-    CAPTION: db 'TSAW OS', 0
+    CAPTION: db 'T', 0x0B, 'S', 0x0B, 'A', 0x0B, 'W', 0x0B, ' ', 0x0B, 'O', 0x0B, 'S', 0x0B, 0
     OSIMAGELOADINGMESSAGE: db 'Image Loading..', 0
     OSIMAGELOADCOMPLETEMESSAGE: db 'Load Complete..', 0
     OSIMAGELOADERRORMESSAGE: db 'Error', 0
