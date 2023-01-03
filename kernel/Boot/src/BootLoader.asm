@@ -20,7 +20,7 @@ START:
 
 INIT_SCREEN:
     mov byte[es:di], 0
-    mov byte[es:di + 1], 0x0F   ; BLINK: 0 / BACKGROUND: 000 / BRIGHTNESS: 1 / TEXTCOLOR: 010
+    mov byte[es:di + 1], 0x0A   ; BLINK: 0 / BACKGROUND: 000 / BRIGHTNESS: 1 / TEXTCOLOR: 010
     add di, 2                   ; di += 2
     cmp di, 80 * 25 * 2         ; if (si < 80 * 25 * 2) goto CLEAR_DISPLAY
     jl INIT_SCREEN              ; . . .
