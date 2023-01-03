@@ -16,6 +16,6 @@ typedef struct kCharactorStruct {   //구조체 시작. typedef = 우리가 타�
     BYTE bCharactor;                
     BYTE bAttribute;
 }CHARACTER;                         //CHARACTER는 kCHARACOTRSTRUCT의 대명사라고 생각. 이유는? 대명사로 이름을 짧게 만들기 위해서.
-#pragma pop                         //pop
+#pragma pack(pop)                         //pop
 
 #endif                              //중복정의를 피하기 위한 메크로
