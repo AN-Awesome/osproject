@@ -1,11 +1,31 @@
-[ORG 0]
-[BITS 16]
+[ORG 0x00]              ; 코드의 시작 어드레스 0x00으로 설정
+[BITS 16]               ; 16비트로 작성
 
-SECTION .text
+SECTION .text           ; text섹션 정의
 START:
     mov ax, 0x1000      ; Start Address Segment(0x10000)
     mov ds, ax          ; ds, es = ax
     mov es, ax          ; . . .
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;A20 게이트 활성화
+;BIOS를 이용한 전환이 실패했을 때 시스템 컨트롤 포트로 전환 시도
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;BIOS 서비스를 사용해서 A20 게이트를 활성화
+mov ax, 0x2401          ; A20 게이트 활성화 서비스 설정
+int 0x15                ; BIOS 인터럽트 서비스 호출
+
+jc .A20_GATE_ERROR      ; A20 게이트 활성화 성공여부 확인
+jmp .A20_GATE_SUCCESS
+
+.A20_GATE_ERROR:
+    ;에러 발생 시, 시스템 컨트롤 포트로 전환 시도
+    in al, 0x92         ; 시스템 컨트롤 포트(0x92)에서 1 바이트를 읽어 AL 레지스터에 저장
+    or al, 0x02         ; 읽은 값에 A20 게이트 비트(비트 1)를 1로 설정
+    and al, 0xFE        ; 시스템 리셋 방지를 위해 0xFE와 AND 연산하여 비트 0을 0으로 설정
+    out 0x92, al        ; 시스템 컨트롤 포트(0x92)에 변경된 값을 1 바이트 설정
+
+.A20_GATE_SUCCESS:
 
     cli                 ; Disable interrupt(Clear Interrupt Flag)
     lgdt [GDTR]         ; Set the GDTR & load GDT Table
