@@ -2,6 +2,7 @@ all: BootLoader Kernel32
 
 BootLoader:
 	@echo ==================== BUILD BOOTLOADER ====================
+	mkdir -p bin
 	make -C Boot
 	@echo ==================== COMPLETE BUILD BOOTLOADER ====================
 
