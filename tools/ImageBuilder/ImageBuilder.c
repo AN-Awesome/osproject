@@ -1,11 +1,3 @@
-/**
- *  file    Imagebuild.c
- *  date    2023/01/03
- *   
- *  brief   부트 로더와 커널 이미지를 연결하고, 섹터 단위로 정렬해 주는 ImageMaker의 
- *          소스 파일
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
