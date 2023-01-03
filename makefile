@@ -17,11 +17,11 @@ _tools:
 	@echo ============================================================
 	@echo 
 
-disk.img: ./kernel/bin/BootLoader.bin ./kernel/bin/Kernel32.bin
+disk.img: kernel/bin/BootLoader.bin kernel/bin/Kernel32.bin
 	@echo 
 	@echo ==================== Disk Image Build ====================
 	@echo 
-	./tools/ImageBuilder.exe $^
+	cat $^ > $@
 	@echo 
 	@echo ============================================================
 	@echo 
