@@ -1,4 +1,4 @@
-all: _kernel disk.img Utility
+all: _kernel disk.img tools
 _kernel:
 	@echo 
 	@echo ==================== Kernel Source Build ====================
@@ -17,7 +17,7 @@ disk.img: ./kernel/bin/BootLoader.bin ./kernel/bin/Kernel32.bin
 	@echo ============================================================
 	@echo 
 
-Utility:
+tools:
 	@echo 
 	@echo ==================== Utility Build ====================
 	@echo 

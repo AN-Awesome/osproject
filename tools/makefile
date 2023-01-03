@@ -2,7 +2,7 @@
 all: ImageBuilder.exe
 
 #ImageBuilder 빌드
-ImageBuilder.exe: ImageBuilder.c
+ImageBuilder.exe: ./ImageBuilder/ImageBuilder.c
 	gcc -o $@ $<
 
 #소스 파일을 제외한 나머지 파일 정리
