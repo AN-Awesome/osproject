@@ -21,7 +21,7 @@ _buildimg: kernel/bin/BootLoader.bin kernel/bin/Kernel32.bin
 	@echo 
 	@echo ==================== Disk Image Build ====================
 	@echo 
-	./tools/ImageBuilder.exe $^
+	./tools/imgbuild_.exe $^
 	@echo 
 	@echo ============================================================
 	@echo 
