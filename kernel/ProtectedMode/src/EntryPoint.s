@@ -62,11 +62,11 @@ PRINTSTRING:
     add edi, eax
 
     ; String data
-    mov esi, dword[ebp + 16]    ; [bp + 8] = String
+    mov esi, dword[ebp + 16]    ; [bp + 16] = String
 
     PRINT_TEXT:
         mov cl, byte[esi]
-        cmp cl, 0x0E           ; End of string :: 0
+        cmp cl, 0           ; End of string :: 0
         je END_PRINT_TEXT   ; . . .
 
         mov byte[edi + 0xB8000], cl ; Print char[si]
