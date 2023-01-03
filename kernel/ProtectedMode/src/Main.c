@@ -10,7 +10,5 @@ void kPrintString( int iX, int iY, const char* pcString) {      //예제 함수�
     int i;
 
     pstScreen += (iY * 80) + iX;                                //가로 : 80 
-    for(i = 0; pcString[i] != 0; i++) {
-        pstScreen[i].bCharactor = pcString[i];                  //Types.h파일의 함수안의 bCharactor를 가르킨다.
-    }
+    for(i = 0; pcString[i] != 0; i++) pstScreen[i].bCharactor = pcString[i];                  //Types.h파일의 함수안의 bCharactor를 가르킨다.
 }

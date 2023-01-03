@@ -108,3 +108,5 @@ GDTEND:
 
 STRING_DAT:
     MODE_SWITCH_COMPLETE: db 'Mode switch process completed', 0
+
+times 512 - ($ - $$) db 0
