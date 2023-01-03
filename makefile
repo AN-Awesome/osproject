@@ -1,4 +1,4 @@
-all: _kernel _tools _buildimg
+all: _kernel Disk.img
 _kernel:
 	@echo 
 	@echo ==================== Kernel Source Build ====================
@@ -8,20 +8,11 @@ _kernel:
 	@echo ============================================================
 	@echo 
 
-_tools:
-	@echo 
-	@echo ==================== Tools Build ====================
-	@echo 
-	make -C tools
-	@echo 
-	@echo ============================================================
-	@echo 
-
-_buildimg: kernel/bin/BootLoader.bin kernel/bin/Kernel32.bin
+Disk.img: kernel/bin/BootLoader.bin kernel/bin/Kernel32.bin
 	@echo 
 	@echo ==================== Disk Image Build ====================
 	@echo 
-	./tools/imgbuild_.exe $^
+	cat $^ > $@
 	@echo 
 	@echo ============================================================
 	@echo 
