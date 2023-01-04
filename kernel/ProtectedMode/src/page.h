@@ -1,8 +1,7 @@
-typedef struct pageTableEntryStruct
-{
-    DWORD dwAttributeAndLowerBaseAddress;
-    DWORD dwUpperBaseAddressAndEXB;
-}   PML4TENTRY, PDENTRY, PTENTRY;
+#ifndef __PAGE_H__
+#define __PAGE_H__
+
+#include "Types.h"
 
 // 하위 32비트 용 속성 필드
 
