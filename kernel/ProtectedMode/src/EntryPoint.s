@@ -34,13 +34,14 @@ jmp .A20_GATE_SUCCESS
     ; PG[0]/CD[1]/NW[0]/RESERVED_AREA[0/0000/0000/0]/AM[0]/RESERVED_AREA[0]/WP[0]/RESERVED_AREA[0000/0000/00]/NE[1]/ET[1]/TS[1]/EM[0]/MP[1]/PE[1]
     mov eax, 0x4000003B 
     mov cr0, eax        ; CR0_Control Register = SETTED FLAGS & SWITCH MODE
-
-    jmp dword 0x08: (PROTECTED_MODE - $$ + 0x10000)
+    
+    ; 커널 코드 세그먼트 0x00을 기준으로 하는 것으로 교체하고 EIP의 값을 0x00을 기준으로 재설정
+    jmp dword 0x18: (PROTECTED_MODE - $$ + 0x10000)     ; 280p 보호 모드용 코드 세그먼트 디스크립터 0x08 → IA-32e 모드용 코드 0x18
 
 ; ENTER PROTECTED MODE
 [BITS 32]
 PROTECTED_MODE:
-    mov ax, 0x10
+    mov ax, 0x20        ; 280p 보호 모드용 데이터 세그먼트 디스크립터 0x10 → IA-32e 모드용 코드 0x20
     mov ds, ax
     mov es, ax
     mov fs, ax
@@ -57,7 +58,7 @@ PROTECTED_MODE:
     push 0
     call PRINTSTRING
 
-    jmp dword 0x08: 0x10200
+    jmp dword 0x18: 0x10200         ; 280p
 
 PRINTSTRING:
     push ebp
@@ -117,10 +118,30 @@ GDT:
         dw 0x0000, 0x0000
         db 0x00, 0x00, 0x00, 0x00
 
+    ; IA-32e 모드 커널용 코드 세그먼트 디스크립터
+    IA_32eCODEDESCRIPTOR:
+        dw 0xFFFF       ; Limit [15:0]
+        dw 0x0000       ; Base  [15:0]
+        db 0x00         ; Base  [23:16]
+        db 0x9A         ; P=1, DPL=0, Code Segment, Execute/Read
+        db 0xAF         ; G=1, D=0, L=1, Limit[19:16]
+        db 0x00         ; Base  [31:24]
+
+    ; IA-32e 모드 커널용 데이터 세그먼트 디스크립터
+    IA_32eDATADESCRIPTOR:
+        dw 0xFFFF       ; Limit [15:0]
+        dw 0x0000       ; Base  [15:0]
+        db 0x00         ; Base  [23:16]
+        db 0x92         ; P=1, DPL=0, Data Segment, Read/Write
+        db 0xAF         ; G=1, D=0, L=1, Limit[19:16]
+        db 0x00         ; Base  [31:24]
+
+    ; 보호 모드 커널용 코드 세그먼트 디스크립터
     CodeDescriptor:
         dw 0xFFFF, 0x0000
         db 0x00, 0x9A, 0xCF, 0x00
 
+    ; 보호 모드 커널용 데이터 세그먼트 디스크립터
     DataDescriptor:
         dw 0xFFFF, 0x0000
         db 0x00, 0x92, 0xCF, 0x00
