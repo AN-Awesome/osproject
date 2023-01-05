@@ -1,1 +1,0 @@
-c_entry.o: src/c_entry.c src/Types.h
