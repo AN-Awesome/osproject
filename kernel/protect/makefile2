@@ -1,0 +1,4 @@
+all: entry.bin
+
+entry.bin: src/entry.s
+	nasm -o $@ $^

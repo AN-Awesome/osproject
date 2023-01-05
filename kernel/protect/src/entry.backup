@@ -1,0 +1,110 @@
+[ORG 0]
+[BITS 16]
+
+SECTION .text
+
+ENTRY:
+    mov ax, 0x1000
+    mov ds, ax
+    mov es, ax
+
+    cli
+    lgdt [ GDTR ]
+
+    mov eax, 0x4000003B
+    mov cr0, eax
+
+    jmp dword 0x08: (ENTRY32 - $$ + 0x10000)
+
+;------------------------------------------------
+[BITS 32]
+ENTRY32:
+    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    ; STACK POINTER(SS)
+    mov ss, ax
+    mov esp, 0xFFFE
+    mov ebp, 0xFFFE
+
+    push ( MSG1 - $$ + 0x10000 )    ; 출력할 메시지의 어드레스르 스택에 삽입
+    push 6                                          ; 화면 Y 좌표(2)를 스택에 삽입
+    push 1 
+    call PRINT_TEXT
+    add esp, 12
+
+    jmp dword 0x08: 0x10200
+
+PRINT_TEXT:
+    push ebp
+    mov ebp, esp
+
+    push esi
+    push edi
+    push eax
+    push ecx
+    push edx
+
+
+    CALCULATE_POSISION_X:
+        mov eax, dword[ebp + 12]    ; [bp + 6] : Y Posision(Parameter_2)
+        mov esi, 160
+        mul esi
+        mov edi, eax
+
+    CALCULATE_POSISION_Y:
+        mov eax, dword[ebp + 8]    ; [bp + 4] : X Posision(Parameter_1)
+        mov esi, 2
+        mul esi
+        add edi, eax
+
+    PROCESS_STRING_DATA:
+        mov esi, dword[ebp + 16]    ; [bp + 8] : String Data(Parameter_3)
+
+    PROCESS_PRINT_TEXT:
+        mov cl, byte[esi]
+        cmp cl, 0
+        je ENDPOINT_PRINT_TEXT
+
+        mov byte[edi + 0xB8000], cl
+        inc esi
+        inc edi
+        jmp PROCESS_PRINT_TEXT
+    
+    ENDPOINT_PRINT_TEXT:
+        pop edx
+        pop ecx
+        pop eax
+        pop edi
+        pop esi
+        pop ebp
+        ret 
+
+align 8, db 0
+dw 0
+
+GDTR:
+    dw ENDPOINT_GDT - GDT - 1
+    dd (GDT - $$ - 0x10000)
+
+GDT:
+    NULLLDESCRIPTER:
+        dw 0, 0
+        db 0, 0, 0, 0
+    
+    CODEDESCRIPTER:
+        dw 0xFFFF, 0
+        db 0, 0x9A, 0xCF, 0
+
+    DATADESCRIPTOR:
+        dw 0xFFFF, 0
+        db 0, 0x92, 0xCF, 0
+
+    ENDPOINT_GDT:
+
+MSG1: db 'O', 0x0C, 'K', 0x0C, 0
+
+times 512 - ($ - $$) db 0
