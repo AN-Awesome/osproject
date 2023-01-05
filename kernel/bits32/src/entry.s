@@ -33,7 +33,7 @@ ENTRY32:
     call PRINT_TEXT
     add esp, 12
 
-    jmp 0x08: 0x10200
+    jmp dword 0x08:0x10200
 
 PRINT_TEXT:
     push ebp
