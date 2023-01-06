@@ -1,0 +1,1 @@
+x86_64-pc-linux-ld.exe -melf_i386 -T ../linkscript.x -nostdlib -e Main -Ttext 0x10200 -o $@ $^
