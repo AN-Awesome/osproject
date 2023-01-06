@@ -1,0 +1,20 @@
+all: _entry_ dep BuildCode ./data/kernel32.elf.bin ../../build/kernel32.bin
+
+_entry_:
+	nasm -o data/entry.bin src/entry.s
+
+dep:
+	gcc -c -m32 -ffreestanding -MM $(wildcard ./src/*.c) > ./data/dependency.dep
+
+BuildCode:
+	make -C data
+
+./data/kernel32.elf.bin:
+	objcopy -j .text -j .data -j .rodata -j .bss -S -O binary ./data/kernel32.elf $@
+
+../../build/kernel32.bin: ./data/entry.bin ./data/kernel32.elf.bin
+	cat $^ > $@
+
+ifeq (Dependency.dep, $(wildcard ./data/dependency.dep))
+include Dependency.dep
+endif
