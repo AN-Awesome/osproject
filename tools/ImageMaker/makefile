@@ -1,4 +1,4 @@
-all: ImageMaker.exe
-ImageMaker.exe: ImageMaker.c
+all: _ImageMaker_
+_ImageMaker_: ImageMaker.c
 	rm -f $@
-	gcc -o $@ $<
+	gcc -o ImageMaker $<

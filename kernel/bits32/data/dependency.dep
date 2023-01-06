@@ -1,1 +1,1 @@
-Main.o: src/Main.c src/types.h
+Main.o: ../src/Main.c ../src/Types.h
