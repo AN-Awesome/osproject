@@ -29,7 +29,7 @@ PROTECTEDMODE:
     mov ebp, 0xFFFE
 
     push ( SWITCHSUCCESSMESSAGE - $$ + 0x10000 )
-    push 8
+    push 7
     push 1
     call PRINTMESSAGE
     add esp, 12
@@ -39,47 +39,49 @@ PROTECTEDMODE:
 PRINTMESSAGE:
     push ebp
     mov ebp, esp
+
     push esi
     push edi
     push eax
     push ecx
     push edx
 
-    mov eax, dword [ ebp + 12 ]
-    mov esi, 160
-    mul esi
-    mov edi, eax
+    CALCULATE_CHAR_AXIS:
+        mov eax, dword [ebp + 12]   ; [bp + 6] : Y Posision(Parameter_2)
+        mov esi, 160
+        mul esi
+        mov edi, eax
 
-    mov eax, dword [ ebp + 8 ]
-    mov esi, 2
-    mul esi
-    add edi, eax
+        mov eax, dword [ebp + 8]     ; [bp + 4] : X Posision(Parameter_1)
+        mov esi, 2
+        mul esi
+        add edi, eax
 
-    mov esi, dword [ ebp + 16 ]
+    mov esi, dword [ebp + 16]       ; [bp + 8] : String Data(Parameter_3)
 
-.MESSAGELOOP:
-    mov cl, byte [ esi ]
-    cmp cl, 0
-    je .MESSAGEEND
+    LOOP_PRINT_CHAR:
+        mov cl, byte [esi]
 
-    mov byte [ edi + 0xB8000 ], cl
+        cmp cl, 0
+        je ENDPOINT_PRINT
 
-    add esi, 1
-    add edi, 2
+        mov byte [edi + 0xB8000], cl
+        
+        add esi, 1
+        add edi, 1
 
-    jmp .MESSAGELOOP
+        jmp LOOP_PRINT_CHAR
 
-.MESSAGEEND:
-    pop edx
-    pop ecx
-    pop eax
-    pop edi
-    pop esi
-    pop ebp
-    ret
+    ENDPOINT_PRINT:
+        pop edx
+        pop ecx
+        pop eax
+        pop edi
+        pop esi
+        pop ebp
+        ret
 
 align 8, db 0
-
 dw 0x0000
 
 GDTR:
@@ -112,6 +114,6 @@ GDT:
         db 0x00
 GDTEND:
 
-SWITCHSUCCESSMESSAGE: db 'Switch To Protected Mode Success~!!', 0
+SWITCHSUCCESSMESSAGE: db '3', 0x0E, '2', 0x0E, ' ', 0x0E, 'K', 0x0E, 'e', 0x0E, 'r', 0x0E, 'n', 0x0E, 'e', 0x0E, 'l', 0x0E, ' ', 0x0E, 'M', 0x0E, 'o', 0x0E, 'd', 0x0E, 'e', 0x0E, ' ', 0x0E, 'S', 0x0E, 'w', 0x0E, 'i', 0x0E, 't', 0x0E, 'c', 0x0E, 'h', 0x0E, ' ', 0x0E, 'C', 0x0E, 'o', 0x0E, 'm', 0x0E, 'p', 0x0E, 'l', 0x0E, 'e', 0x0E, 't', 0x0E, 'e', 0x0E, 0
 
 times 512 - ( $ - $$ ) db 0x00 

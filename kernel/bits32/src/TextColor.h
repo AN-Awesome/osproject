@@ -1,0 +1,5 @@
+#define YELLOW 0x0E
+#define GREEN 0x0A
+#define WHITE 0x0F
+#define PINK 0x0D
+#define BLUE 0x0B
