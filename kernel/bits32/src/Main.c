@@ -1,4 +1,5 @@
 #include "Types.h"
+#include "Page.h"
 #include "TextColor.h"
 
 void kPrintString(int iX, int iY, const char* pcString, int color);
@@ -25,6 +26,10 @@ void Main(void) {
         while(1);
     }
     kPrintString(35, 10, ">> COMPLETE <<", GREEN);
+
+    kPrintString(1, 11, "IA-32e Kernel Page Tables Init.", GRAY);
+    kInitializePageTables();
+    kPrintString(35, 11, ">> COMPLETE <<", GREEN);
 
     while(1);
 }

@@ -1,1 +1,2 @@
-Main.o: src/Main.c src/Types.h src/TextColor.h
+Main.o: src/Main.c src/Types.h src/Page.h src/TextColor.h
+Page.o: src/Page.c src/Page.h src/Types.h
