@@ -6,30 +6,30 @@ BOOL kInitializeKernel64Area(void);
 BOOL kIsMemoryEnough(void);
 
 void Main(void) {
-    kPrintString(1, 8, "C Object Processing..........[Pass]", YELLOW);
+    kPrintString(1, 8, "C Object Processing.", YELLOW);
+    kPrintString(24, 8, ">> COMPLETE <<", GREEN);
 
     DWORD i;
-
-    kPrintString(0, 4, "Minimum Memory Size Check..........[     ]", YELLOW);
+    kPrintString(1, 9, "Minimum Memory Size Check.", PINK);
     if(kIsMemoryEnough() == FALSE) {
-        kPrintString(45, 4, "Fail");
-        kPrintString(0, 5, "Not Enought Memory~!! FS64 OS Requires Over 64Mbyte Memory~!!");
+        kPrintString(31, 9, ">> FAIL <<", RED);
+        kPrintString(1, 10, "Not Enough Memory. Require More Over 64mb Space.", RED_BRIGHT);
         while(1);
     }
-    else {
-        kPrintString(45, 4, "Pass");
-    }
+    else kPrintString(31, 9, ">> COMPLETE <<", GREEN);
 
+    kPrintString(0, 10, "IA-32e Kernel Area Initialize.", PINK);
+    kPrintString(30, 5, ">> FAIL <<", RED);
+
+    /*
     // IA-32e 모듸 커널 영역을 초기화
-    kPrintString(0, 5, "IA-32e Kernel Area Initialize..........[     ]");
     if(kInitializeKernel64Area() == FALSE) {
-        kPrintString(45, 5, "Fail");
-        kPrintString(0, 6, "Kernel Area Initialization Fail~!!");
+        kPrintString(45, 5, "Fail", PINK);
+        kPrintString(0, 6, "Kernel Area Initialization Fail~!!", PINK);
         while(1);
     }
-
     kPrintString(45, 5, "Pass");
-
+    */
     while(1);
 }
 

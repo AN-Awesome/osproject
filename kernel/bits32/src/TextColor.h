@@ -3,3 +3,5 @@
 #define WHITE 0x0F
 #define PINK 0x0D
 #define BLUE 0x0B
+#define RED 0x04
+#define RED_BRIGHT 0x0C
