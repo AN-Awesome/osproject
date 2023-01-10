@@ -1,7 +1,19 @@
 #define YELLOW 0x0E
+#define BROWN 0x06
+
 #define GREEN 0x0A
+
+#define BLUE 0x01
+#define BLUE_BR 0x09
+
+#define SKY 0x03
+#define SKY_BR 0x0B
+
+#define RED 0x04
+#define RED_BR 0x0C
+
+#define PINK 0x05
+#define PINK_BR 0x0D
+
 #define WHITE 0x0F
-#define PINK 0x0D
-#define BLUE 0x0B
-#define RED 0x0C
 #define GRAY 0x07
