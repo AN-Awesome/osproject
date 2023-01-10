@@ -1,7 +1,6 @@
 all: clean _kernel_ _tools_ Disk.img
 
 _kernel_:
-
 	make -C kernel
 
 _tools_:

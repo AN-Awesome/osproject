@@ -9,16 +9,18 @@ START:
     mov es, ax
 
     cli
-    lgdt [ GDTR ]
+    lgdt [GDTR]
 
-    mov eax, 0x4000003B
+    ; ENTER TO 32 BIT MODE(PROTECTED MODE)
+    mov eax, 0x4000003B     ; FLAG SETUP
+                            ; PG: 0, CD: 1, NW: 0, AM: 0, WP: 0, NE: 1, ET: 1, TS: 1, EM: 0, MP: 1, PE: 1
     mov cr0, eax
 
-    jmp dword 0x08: (ENTRY32 - $$ + 0x10000)
+    jmp dword 0x18: (ENTRY32 - $$ + 0x10000)
 
 [BITS 32]
 ENTRY32:
-    mov ax, 0x10
+    mov ax, 0x20
     mov ds, ax
     mov es, ax
     mov fs, ax
@@ -28,13 +30,13 @@ ENTRY32:
     mov esp, 0xFFFE
     mov ebp, 0xFFFE
 
-    push ( SWITCHSUCCESSMESSAGE - $$ + 0x10000 )
+    push (SWITCHSUCCESSMESSAGE - $$ + 0x10000)
     push 7
     push 1
     call PRINTMESSAGE
     add esp, 12
 
-    jmp dword 0x08: 0x10200
+    jmp dword 0x18: 0x10200
 
 PRINTMESSAGE:
     push ebp
@@ -47,17 +49,17 @@ PRINTMESSAGE:
     push edx
 
     CALCULATE_CHAR_AXIS:
-        mov eax, dword [ebp + 12]   ; [bp + 6] : Y Posision(Parameter_2)
+        mov eax, dword [ebp + 12]   ; [bp + 12] : Y Posision(Parameter_2)
         mov esi, 160
         mul esi
         mov edi, eax
 
-        mov eax, dword [ebp + 8]     ; [bp + 4] : X Posision(Parameter_1)
+        mov eax, dword [ebp + 8]     ; [bp + 8] : X Posision(Parameter_1)
         mov esi, 2
         mul esi
         add edi, eax
 
-    mov esi, dword [ebp + 16]       ; [bp + 8] : String Data(Parameter_3)
+    mov esi, dword [ebp + 16]       ; [bp + 16] : String Data(Parameter_3)
 
     LOOP_PRINT_CHAR:
         mov cl, byte [esi]
@@ -95,6 +97,22 @@ GDT:
         db 0x00
         db 0x00
         db 0x00
+        db 0x00
+
+    IA32E_CODEDESCRIPTOR:
+        dw 0xFFFF
+        dw 0x0000
+        db 0x00
+        db 0x9A
+        db 0xAF
+        db 0x00
+
+    IA32E_DATADESCRIPTOR:
+        dw 0xFFFF
+        dw 0x0000
+        db 0x00
+        db 0x92
+        db 0xAF
         db 0x00
 
     CODEDESCRIPTOR:

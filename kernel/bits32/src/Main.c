@@ -1,37 +1,63 @@
 #include "Types.h"
 #include "Page.h"
+#include "ModeSwitch.h"
 #include "TextColor.h"
 
 void kPrintString(int iX, int iY, const char* pcString, int color);
 BOOL kInitializeKernel64Area(void);
 BOOL kIsMemoryEnough(void);
 
+// C Object Kernel Entry Point(Main())
 void Main(void) {
+    //START CAPTION PRINTF
     kPrintString(1, 8, "C Object Processing.", YELLOW);
     kPrintString(35, 8, ">> COMPLETE <<", GREEN);
 
+    // LOCAL VARIABLES
     DWORD i;
+    DWORD dwEAX, dwEBX, dwECX, dwEDX;
+    char vcVendorString[13] = {0, };
+    
+    // Checking if the current memory size is greater than the minimum required amount.
     kPrintString(1, 9, "Minimum Memory Size Check.", GRAY);
     if(kIsMemoryEnough() == FALSE) {
         kPrintString(35, 9, ">> FAIL <<", RED);
         kPrintString(1, 10, "Not Enough Memory. Require More Over 64mb Space.", RED);
-        while(1);
+        while(1);   // jmp $
     }
     else kPrintString(35, 9, ">> COMPLETE <<", GREEN);
 
+    // IA-32e Kernel Area Init. Process
     kPrintString(1, 10, "IA-32e Kernel Area Initialize.", GRAY);
     if(kInitializeKernel64Area() == FALSE) {
         kPrintString(35, 10, ">> FAIL <<", RED);
         kPrintString(1, 11, "Kernel Init Error.", RED);
-        while(1);
+        while(1);   // jmp $
     }
     kPrintString(35, 10, ">> COMPLETE <<", GREEN);
 
+    // Create Page Table for IA-32e Mode Kernel. 
     kPrintString(1, 11, "IA-32e Kernel Page Tables Init.", GRAY);
     kInitializePageTables();
     kPrintString(35, 11, ">> COMPLETE <<", GREEN);
 
-    while(1);
+    // Check the manufacturer information of the processor.
+    kReadCPUID(0x00, &dwEAX, &dwEBX, &dwECX, &dwEDX);
+    *(DWORD*) vcVendorString = dwEBX;
+    *((DWORD*) vcVendorString + 1) = dwEDX;
+    *((DWORD*) vcVendorString + 2) = dwECX;
+    kPrintString(1, 13, "Processor Vendor String: ", BLUE);
+    kPrintString(40, 13, vcVendorString, PINK);
+
+    // Checks if the current processor can use a 64-bit system.
+    kReadCPUID(0x80000001, &dwEAX, &dwEBX, &dwECX, &dwEDX);
+    kPrintString(1, 14, "64Bit System IsSupoort: ", BLUE);
+    if (dwEDX & (1 << 29)) kPrintString(40, 1, "SUPPORT", GREEN);
+    else {
+        kPrintString(40, 14, "NOT SUPPORT", RED);
+        while(1); // jmp $
+    }
+    while(1); // jmp $
 }
 
 void kPrintString(int iX, int iY, const char* pcString, int color) {
@@ -57,7 +83,7 @@ BOOL kInitializeKernel64Area(void) {
 
 BOOL kIsMemoryEnough(void) {
     DWORD* pdwCurrentAddress;
-    pdwCurrentAddress = (DWORD*) 0X100000;
+    pdwCurrentAddress = (DWORD*) 0x100000;
 
     while((DWORD) pdwCurrentAddress < 0x4000000) {
         *pdwCurrentAddress = 0x12345678;

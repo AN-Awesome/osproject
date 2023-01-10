@@ -1,6 +1,6 @@
 all: _entry_ _c_dep_ _bin_link_ data/kernel32.elf.bin ../../build/kernel32.bin
 
-_entry_: ./src/entry.s
+_entry_: ./src/Entry.s
 	nasm -o data/entry.bin $<
 
 _c_dep_:
