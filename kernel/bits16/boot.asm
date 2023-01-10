@@ -19,8 +19,8 @@ ENTRY:
     ; STACK POINTER(SS)
     mov ax, 0x0000
     mov ss, ax
-    mov sp, 0xFFFE
-    mov bp, 0xFFFE
+    mov sp, 0xFFFE     ; SIZE:: ~ FFFF
+    mov bp, 0xFFFE     ; SIZE:: ~ FFFF
 
 CLEARSCREEN:
     mov si, 0
