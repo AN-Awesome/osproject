@@ -87,7 +87,7 @@ BOOL kIsMemoryEnough(void) {
 
     while((DWORD) pdwCurrentAddress < 0x4000000) {
         *pdwCurrentAddress = 0x12345678;
-        if( *pdwCurrentAddress != 0x12345678) return FALSE;
+        if(*pdwCurrentAddress != 0x12345678) return FALSE;
         pdwCurrentAddress += (0x100000 / 4);
     }
     return TRUE;
