@@ -14,10 +14,10 @@ START:
     mov eax, 0x4000003B
     mov cr0, eax
 
-    jmp dword 0x08: (PROTECTEDMODE - $$ + 0x10000)
+    jmp dword 0x08: (ENTRY32 - $$ + 0x10000)
 
 [BITS 32]
-PROTECTEDMODE:
+ENTRY32:
     mov ax, 0x10
     mov ds, ax
     mov es, ax
