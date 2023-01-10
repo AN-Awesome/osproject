@@ -1,3 +1,4 @@
-all: bootloader
-bootloader: boot.asm
-	nasm -o ../../build/boot.bin $^
+all: BootLoader.bin
+
+BootLoader.bin: boot.asm
+	nasm -o ../../build/boot.bin boot.asm
